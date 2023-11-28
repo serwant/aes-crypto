@@ -51,10 +51,6 @@ match menu:
         # вызов функции дешифровки файла
         decryption(en_file, password)
         os.system('nano file')
-        # Записываем нужный контент в файл
-        #with open(file, 'a') as f:
-        #    f.write(stro)
-        #f.close()
 
 
 
