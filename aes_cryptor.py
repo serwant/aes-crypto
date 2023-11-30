@@ -24,20 +24,24 @@ def encryption(file, password):
     else:
         print("Файл не существует:", file)
 
+# функция дешифровки файла
 def decryption(en_file, password):
     # задаём размер буфера
     buffer_size = 512 * 1024
-    try:
-        # вызываем метод расшифровки
-        pyAesCrypt.decryptFile(
-        str(en_file),
-        str(os.path.splitext(file)[0]),
-        password,
-        buffer_size
-        )
-        print("[Файл '" + str(os.path.splitext(file)[0]) + "' дешифрован]")
-    except Exception as e:
-        print("Произошла ошибка:", e)
+    if os.path.exists(en_file):
+        try:
+            # вызываем метод расшифровки
+            pyAesCrypt.decryptFile(
+            str(en_file),
+            str(os.path.splitext(file)[0]),
+            password,
+            buffer_size
+            )
+            print("[Файл '" + str(os.path.splitext(file)[0]) + "' дешифрован]")
+        except Exception as e:
+            print("Произошла ошибка:", e)
+    else:
+        print("Файл не существует:", en_file)
 
 print("e - encoding file\nd - decoding file\n")
 menu = input("Select an action: ")
@@ -50,7 +54,7 @@ match menu:
         password = input("Введите пароль для дешифровки: ")
         # вызов функции дешифровки файла
         decryption(en_file, password)
-        os.system('nano file')
+
 
 
 
