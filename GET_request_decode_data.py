@@ -7,18 +7,22 @@ import os
 
 en_file = "/home/sergario/aes-crypto/Encod_Data.txt"
 url = 'http://127.0.0.1:8000/post'
-# данные в виде словаря
+# данные в виде словаря:
 headers = {'Content-Type': 'application/json'}
+# запрос у пользователя ввод пароля, скрывая введенные символы:
 password = getpass.getpass("Введите пароль для дешифрования: ")
-print('Pass: ', password)
+# преобразование в байты:
 password = password.encode()
+# вектор инициализации для дешифрования:
 iv = b'\x8d\xae\xbae\xc9l_%\xa5j\xe5\x91R\\F\x0c'
+# Генерация ключа для дешифрования, применяя MD5-хеш к паролю и преобразуя результат в байты:
 key = md5(password).hexdigest().encode()
-print('Key: ', key)
+# Кодирование ключа в формат base64 для отправки на сервер:
 encoded_key = base64.b64encode(key).decode('utf-8')
-print("Encoded key", encoded_key)
+# Если закодированный файл существует:
 if os.path.exists(en_file):
     try:
+        # открыть файл в режиме чтения:
         f = open(en_file, 'r')
         data = f.read()
         f.close()
@@ -26,7 +30,10 @@ if os.path.exists(en_file):
         print("Произошла ошибка:", e)
 else:
     print("Файл не существует:", en_file)
+# Формирование словаря параметров для отправки запроса на сервер:
 param = {'key': encoded_key, 'data': data, 'act': 'decod'}
+# Отправка POST-запроса на указанный URL:
 resp = requests.post(url, json=param, headers=headers)
+# Распаковка JSON-ответа от сервера:
 res = json.loads(resp.text)
 print(res)
