@@ -19,27 +19,44 @@ class S(BaseHTTPRequestHandler):
         post_data = self.rfile.read(content_length)  # Decode bytes to string
         print(post_data)
         temp = json.loads(post_data)
-        print(temp)
         key = (temp['key'])
+        print('Key: ', key)
         decoded_key = base64.b64decode(key)
-        print(decoded_key)
+        print("Decoded key: ", decoded_key)
         data = (temp['data'])
         data = data.encode()
-        print(data)
-
-        # Шифрование
+        print("Data: ",data)
+        act = (temp['act'])
+        print(act)
         cipher = Cipher(algorithms.AES(decoded_key), modes.CBC(iv))
-        #cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
-        encryptor = cipher.encryptor()
-        padder = padding.PKCS7(128).padder()
-        padded_data = padder.update(data) + padder.finalize()
-        ciphertext = encryptor.update(padded_data) + encryptor.finalize()
-        encoded_ciphertext = base64.b64encode(ciphertext).decode('utf-8')
-        print(encoded_ciphertext)
-        #param = {'encoded_data': encoded_ciphertext}
-        param = json.dumps({'encoded_data': encoded_ciphertext})
-        print(param)
-        self.wfile.write(param.encode())
+        if act == 'encod':
+            # Шифрование
+            print('Encoding:')
+            encryptor = cipher.encryptor()
+            padder = padding.PKCS7(128).padder()
+            padded_data = padder.update(data) + padder.finalize()
+            ciphertext = encryptor.update(padded_data) + encryptor.finalize()
+            encoded_ciphertext = base64.b64encode(ciphertext).decode('utf-8')
+            print(encoded_ciphertext)
+            param = json.dumps({'encoded_data': encoded_ciphertext})
+            print(param)
+            self.wfile.write(param.encode())
+
+        elif act == 'decod':
+            # Дешифрование
+            print('Decoding:')
+            ciphertext = base64.b64decode(data)
+            print(ciphertext)
+            decryptor = cipher.decryptor()
+            unpadder = padding.PKCS7(128).unpadder()
+            decrypted_data = decryptor.update(ciphertext) + decryptor.finalize()
+            unpadded_data = unpadder.update(decrypted_data) + unpadder.finalize()
+            print(unpadded_data)  # Вывод: b'Секретное сообщение'
+            unpadded_data = unpadded_data.decode()
+             # Результат в переменной data
+            param = json.dumps({'decoded_data': unpadded_data})
+            print('Param: ',param)
+            self.wfile.write(param.encode())
 def run(addr="localhost", port=8000):
     server_address = (addr, port)
     httpd = HTTPServer(server_address, S)
