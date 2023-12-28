@@ -6,7 +6,7 @@ import getpass
 import os
 
 en_file = "/home/sergario/aes-crypto/Encod_Data.txt"
-url = 'http://127.0.0.1:8000/post'
+url = 'http://127.0.0.1:8000/decode'
 # данные в виде словаря:
 headers = {'Content-Type': 'application/json'}
 # запрос у пользователя ввод пароля, скрывая введенные символы:
