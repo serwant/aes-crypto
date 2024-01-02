@@ -4,7 +4,8 @@ import base64
 import json
 import getpass
 
-url = 'http://127.0.0.1:8000/encode'
+#url = 'http://127.0.0.1:8000/encode'
+url = 'http://127.0.0.1:8000/post'
 # данные в виде словаря
 headers = {'Content-Type': 'application/json'}
 # запрос у пользователя ввод пароля, скрывая введенные символы:
