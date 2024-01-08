@@ -18,7 +18,6 @@ while True:
     else:
         temp = line[18:] # часть строки, определяющая содержание
         temp = temp.strip() # удалить перенос в конце строки
-#        if temp == "Connection received from 10.0.0.11" or temp == 'Client 10.0.0.11 disconnected':
         if pattern1.match(temp) or pattern2.match(temp):
             param = {'data': line} # данные - в словарь
             # Отправка POST-запроса на указанный URL:
