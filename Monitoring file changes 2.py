@@ -5,6 +5,7 @@ import re
 
 pattern1 = re.compile(r"Connection received from (\d+\.\d+\.\d+\.\d+)")
 pattern2 = re.compile(r"Client (\d+\.\d+\.\d+\.\d+) disconnected")
+
 url = 'http://127.0.0.1:8000/post'
 # данные в виде словаря
 headers = {'Content-Type': 'application/json'}

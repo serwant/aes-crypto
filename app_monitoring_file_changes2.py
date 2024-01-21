@@ -17,8 +17,8 @@ class LogBase(db.Model): # создает форму таблицы базы в 
         return '<LogBase %r>' % self.id # к выбираемому объекту додается "id"
 
 # Запуск контекста приложения перед выполнением операций с базой данных
-with app.app_context():
-    db.create_all()
+# with app.app_context():
+#     db.create_all()
 
 @app.route('/post', methods=['POST'])
 def parse_request():
@@ -28,7 +28,7 @@ def parse_request():
     db.session.add(content) # добавляет данные в базу
     db.session.commit() # сохраняет обновленные данные
     print('Record was successfully added')
-    return jsonify({'data': 'Ok'}) # Отправляет JSON-данные в ответ
+    return jsonify({'data': 'Record was successfully added'}) # Отправляет JSON-данные в ответ
 
 
 if __name__ == '__main__':
